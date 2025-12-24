@@ -1,0 +1,16 @@
+﻿@model MelomanClone.Models.Product
+
+<h2>Delete Product</h2>
+
+<p>Are you sure you want to delete this product?</p>
+
+<ul>
+    <li><strong>Title:</strong> @Model.Title</li>
+    <li><strong>Price:</strong> @Model.Price ₸</li>
+    <li><strong>Category:</strong> @Model.Category?.Name</li>
+</ul>
+
+<form method="post">
+    <button class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
