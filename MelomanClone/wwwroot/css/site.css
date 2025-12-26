@@ -31,8 +31,18 @@ body {
     }
 
 .product-img {
-    height: 220px;
-    object-fit: cover;
+    height: 300px;
+    width: 100%;
+    object-fit: contain;
+    background-color: #f8f9fa;
+}
+.product-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card img {
+    padding: 10px;
 }
 
 .card-title {

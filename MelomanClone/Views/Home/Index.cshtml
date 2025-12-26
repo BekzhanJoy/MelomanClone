@@ -9,6 +9,56 @@
 
 <h2 class="mb-4">Products</h2>
 
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text"
+               name="keyword"
+               value="@ViewBag.Keyword"
+               class="form-control"
+               placeholder="Search products..." />
+    </div>
+
+    <div class="col-md-3">
+        <select name="categoryId" class="form-control">
+            <option value="0">All categories</option>
+            @foreach (var cat in ViewBag.Categories)
+            {
+                <option value="@cat.Id"
+                        selected="@(ViewBag.CategoryId == cat.Id)">
+                    @cat.Name
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="sort" class="form-control">
+            <option value="">Sort by</option>
+            <option value="price_asc"
+                    selected="@(ViewBag.Sort == "price_asc")">
+                Price: Low → High
+            </option>
+            <option value="price_desc"
+                    selected="@(ViewBag.Sort == "price_desc")">
+                Price: High → Low
+            </option>
+        </select>
+    </div>
+
+    <div class="col-md-2 d-flex gap-2">
+        <button class="btn btn-primary w-100">
+            Apply
+        </button>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary w-100">
+            Reset
+        </a>
+    </div>
+
+</form>
+
 @if (!Model.Any())
 {
     <div class="alert alert-info">
@@ -46,4 +96,57 @@ else
             </div>
         }
     </div>
+}
+@if (ViewBag.TotalPages > 1)
+{
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new {
+                           page = ViewBag.CurrentPage - 1,
+                           keyword = ViewBag.Keyword,
+                           categoryId = ViewBag.CategoryId,
+                           sort = ViewBag.Sort
+                       })">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new {
+                           page = i,
+                           keyword = ViewBag.Keyword,
+                           categoryId = ViewBag.CategoryId,
+                           sort = ViewBag.Sort
+                       })">
+                        @i
+                    </a>
+                </li>
+            }
+
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new {
+                           page = ViewBag.CurrentPage + 1,
+                           keyword = ViewBag.Keyword,
+                           categoryId = ViewBag.CategoryId,
+                           sort = ViewBag.Sort
+                       })">
+                        Next
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </nav>
 }

@@ -4,31 +4,72 @@
 
 @if (!Model.Any())
 {
-    <p>You have no orders.</p>
+    <div class="alert alert-info">
+        You have no orders yet.
+    </div>
 }
 else
 {
     @foreach (var order in Model)
     {
         <div class="card mb-3">
-            <div class="card-header">
-                Order #@order.Id —
-                @order.CreatedAt.ToLocalTime()
+            <div class="card-header d-flex justify-content-between">
+                <span>
+                    <strong>Order #@order.Id</strong> —
+                    @order.CreatedAt.ToLocalTime()
+                </span>
+
+                <span>
+                    @if (order.Status == "Pending")
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                    else if (order.Status == "Completed")
+                    {
+                        <span class="badge bg-success">Completed</span>
+                    }
+                    else if (order.Status == "Cancelled")
+                    {
+                        <span class="badge bg-danger">Cancelled</span>
+                    }
+                </span>
             </div>
 
             <div class="card-body">
-                <ul>
+                <ul class="mb-3">
                     @foreach (var item in order.Items)
                     {
                         <li>
                             @item.ProductTitle —
-                            @item.Quantity x @item.Price ₸
+                            @item.Quantity × @item.Price ₸
                         </li>
                     }
                 </ul>
 
-                <strong>Total: @order.TotalPrice ₸</strong>
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>Total: @order.TotalPrice ₸</strong>
+
+                    @if (order.Status == "Pending")
+                    {
+                        <small class="text-muted">
+                            Your order is being processed.
+                        </small>
+                    }
+                    else if (order.Status == "Completed")
+                    {
+                        <small class="text-success">
+                            Your order has been completed.
+                        </small>
+                    }
+                    else if (order.Status == "Cancelled")
+                    {
+                        <small class="text-danger">
+                            Your order was cancelled.
+                        </small>
+                    }
+                </div>
             </div>
+
         </div>
     }
 }
