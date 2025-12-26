@@ -2,6 +2,7 @@ using MelomanClone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using MelomanClone.Models;
+using OfficeOpenXml;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
 });
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
